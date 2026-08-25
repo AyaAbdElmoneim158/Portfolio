@@ -1,0 +1,1662 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aya Abdelmoneim — Flutter Developer</title>
+    <meta
+      name="description"
+      content="Aya Abdelmoneim — Flutter Developer and Mobile Application Specialist focused on scalable architecture, clean code, and production-ready mobile applications."
+    />
+
+    <!-- ===== STYLES ===== -->
+    <style>
+      /* ---------- RESET & BASE ---------- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background:
+          radial-gradient(
+            circle at 20% 0%,
+            rgba(51, 140, 204, 0.08),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 90% 35%,
+            rgba(53, 214, 231, 0.045),
+            transparent 25%
+          ),
+          #070b12;
+        color: #f2f5f8;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      ::selection {
+        background: #338ccc;
+        color: #fff;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font: inherit;
+      }
+
+      /* ---------- VARIABLES ---------- */
+      :root {
+        --bg: #070b12;
+        --bg-soft: #0b111b;
+        --surface: #0d1520;
+        --surface-2: #111b29;
+        --primary: #338ccc;
+        --primary-light: #55b4ff;
+        --cyan: #35d6e7;
+        --text: #f2f5f8;
+        --text-secondary: #a4afbe;
+        --text-muted: #657386;
+        --border: rgba(120, 170, 210, 0.15);
+        --container: 1160px;
+        --radius: 14px;
+        --transition: 0.3s ease;
+      }
+
+      /* ---------- UTILITY ---------- */
+      .container {
+        width: min(var(--container), calc(100% - 40px));
+        margin-inline: auto;
+      }
+      .grid-background {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.025) 1px,
+            transparent 1px
+          );
+        background-size: 55px 55px;
+        mask-image: linear-gradient(to bottom, black, transparent 85%);
+      }
+      .text-linear-gradient {
+        font-style: normal;
+        background: linear-gradient(100deg, var(--primary-light), var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .section-index-big {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--primary-light);
+        font-family: monospace;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+      }
+      .section-index {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--primary-light);
+        font-family: monospace;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        transition: var(--transition);
+      }
+      .button-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .button-primary:hover {
+        background: var(--primary-light);
+        transform: translateY(-2px);
+      }
+      .button-secondary {
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .button-secondary:hover {
+        color: #fff;
+        border-color: rgba(85, 180, 255, 0.35);
+      }
+
+      .skill-tag {
+        padding: 5px 8px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-secondary);
+        font-family: monospace;
+        font-size: 10px;
+        transition: var(--transition);
+      }
+      .skill-tag:hover {
+        color: #fff;
+        border-color: rgba(85, 180, 255, 0.35);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(25px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ---------- HEADER / NAV ---------- */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        height: 76px;
+        background: rgba(7, 11, 18, 0.72);
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid transparent;
+        transition: var(--transition);
+      }
+      header.scrolled {
+        background: rgba(7, 11, 18, 0.92);
+        border-bottom-color: var(--border);
+      }
+      .nav {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(85, 180, 255, 0.3);
+        border-radius: 9px;
+        color: var(--primary-light);
+        background: rgba(51, 140, 204, 0.08);
+        font-family: monospace;
+        font-size: 12px;
+      }
+      .brand span:last-child {
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      .navigation {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .navigation a {
+        transition: var(--transition);
+      }
+      .navigation a:hover {
+        color: var(--text);
+      }
+      .nav-contact {
+        color: var(--primary-light) !important;
+      }
+      .menu {
+        display: none;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        background: var(--surface);
+        color: #fff;
+        cursor: pointer;
+      }
+
+      /* ---------- HERO ---------- */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding-top: 100px;
+      }
+      .hero-layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 90px;
+        align-items: center;
+      }
+      .availability {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+        font-size: 11px;
+        font-family: monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      .availability-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 12px rgba(74, 222, 128, 0.7);
+      }
+      .hero h1 {
+        margin-top: 22px;
+        max-width: 850px;
+        font-size: clamp(52px, 7vw, 88px);
+        line-height: 0.94;
+        letter-spacing: -0.065em;
+      }
+      .hero h1 em {
+        font-style: normal;
+        background: linear-gradient(100deg, var(--primary-light), var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hero-description {
+        max-width: 650px;
+        margin-top: 28px;
+        color: var(--text-secondary);
+        font-size: 17px;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 32px;
+      }
+      .hero-profile {
+        position: relative;
+        padding: 25px;
+        border: 1px solid var(--border);
+        background: rgba(13, 21, 32, 0.6);
+      }
+      .profile-frame {
+        aspect-ratio: 1;
+        overflow: hidden;
+      }
+      .profile-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .profile-info {
+        padding-top: 18px;
+      }
+      .profile-info strong {
+        display: block;
+        font-size: 14px;
+      }
+      .profile-info span {
+        color: var(--text-muted);
+        font-size: 11px;
+      }
+      .profile-line {
+        width: 100%;
+        height: 1px;
+        margin-top: 18px;
+        background: var(--border);
+      }
+
+      /* ---------- SECTIONS ---------- */
+      section {
+        padding: 120px 0;
+      }
+      .section-heading {
+        max-width: 760px;
+        margin-bottom: 55px;
+      }
+      .section-heading h2 {
+        font-size: clamp(34px, 5vw, 55px);
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+      .section-heading p {
+        margin-top: 18px;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      /* ---------- SKILLS ---------- */
+      .skills {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border-top: 1px solid var(--border);
+        border-left: 1px solid var(--border);
+      }
+      .skill {
+        min-height: 280px;
+        padding: 30px;
+        border-right: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        transition: var(--transition);
+      }
+      .skill:hover {
+        background: rgba(51, 140, 204, 0.035);
+      }
+      .skill-number {
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 11px;
+      }
+      .skill h3 {
+        margin-top: 28px;
+        font-size: 19px;
+        letter-spacing: -0.025em;
+      }
+      .skill p {
+        margin-top: 12px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 24px;
+      }
+
+      /* ---------- EXPERIENCE ---------- */
+      .experience {
+        border-top: 1px solid var(--border);
+      }
+      .experience-item {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 40px;
+        padding: 35px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .experience-date {
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 11px;
+      }
+      .experience-main h3 {
+        font-size: 18px;
+      }
+      .experience-role {
+        margin-top: 3px;
+        color: var(--primary-light);
+        font-size: 12px;
+      }
+      .experience-description {
+        max-width: 760px;
+        margin-top: 13px;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      .experience-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 18px;
+      }
+      .experience-tag {
+        padding: 5px 8px;
+        background: rgba(51, 140, 204, 0.07);
+        border-radius: 6px;
+        color: #91cfff;
+        font-family: monospace;
+        font-size: 9px;
+      }
+      .experience-tag:hover {
+        color: #fff;
+        border-color: rgba(85, 180, 255, 0.35);
+      }
+
+      /* ---------- PROJECTS ---------- */
+      .projects {
+        border-top: 1px solid var(--border);
+      }
+      .project {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 40px;
+        padding: 38px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .project-index {
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 11px;
+      }
+      .project-type {
+        margin-top: 18px;
+        color: var(--primary-light);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      .project-main h3 {
+        font-size: 25px;
+        letter-spacing: -0.035em;
+      }
+      .project-main p {
+        max-width: 750px;
+        margin-top: 10px;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      .project-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 18px;
+      }
+      .project-tech span {
+        padding: 5px 9px;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 9px;
+      }
+      .project-link {
+        display: inline-flex;
+        margin-top: 22px;
+        color: var(--primary-light);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      /* ---------- TEACHING ---------- */
+      .teaching-layout {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 70px;
+      }
+      .teaching-highlight {
+        padding: 35px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .teaching-number {
+        color: var(--primary-light);
+        font-size: 55px;
+        line-height: 1;
+        letter-spacing: -0.06em;
+      }
+      .teaching-highlight h3 {
+        margin-top: 20px;
+        font-size: 21px;
+      }
+      .teaching-highlight p {
+        margin-top: 10px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+      .teaching-list {
+        border-top: 1px solid var(--border);
+      }
+      .teaching-item {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 25px;
+        padding: 24px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .teaching-item span {
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 10px;
+      }
+      .teaching-item h3 {
+        font-size: 15px;
+      }
+      .teaching-item p {
+        margin-top: 5px;
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+
+      /* ---------- TUTORIALS ---------- */
+      .tutorials {
+        position: relative;
+        overflow: hidden;
+      }
+      .tutorial-track {
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding: 4px 2px 14px;
+        cursor: grab;
+      }
+      .tutorial-track::-webkit-scrollbar {
+        display: none;
+      }
+      .tutorial-track.dragging {
+        cursor: grabbing;
+        scroll-behavior: auto;
+        scroll-snap-type: none;
+      }
+      .tutorial-card {
+        flex: 0 0 calc((100% - 36px) / 3);
+        scroll-snap-align: start;
+        min-width: 0;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        transition: var(--transition);
+      }
+      .tutorial-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(85, 180, 255, 0.32);
+        background: var(--surface-2);
+      }
+      .tutorial-thumb {
+        position: relative;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+        padding: 18px;
+        background:
+          radial-gradient(
+            circle at 85% 15%,
+            rgba(85, 180, 255, 0.28),
+            transparent 28%
+          ),
+          linear-gradient(135deg, #101d2b, #080d14 72%);
+        border-bottom: 1px solid var(--border);
+      }
+      .tutorial-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .tutorial-thumb::before {
+        content: "▶";
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 50%;
+        color: #fff;
+        background: rgba(7, 11, 18, 0.72);
+        font-size: 11px;
+        backdrop-filter: blur(8px);
+      }
+      .tutorial-thumb::after {
+        content: "YOUTUBE TUTORIAL";
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        color: var(--primary-light);
+        font-family: monospace;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+      }
+      .tutorial-thumb-label {
+        max-width: 78%;
+        color: #fff;
+        font-size: clamp(17px, 2vw, 23px);
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+      }
+      .tutorial-content {
+        padding: 18px;
+      }
+      .tutorial-number {
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 10px;
+      }
+      .tutorial-content h3 {
+        margin-top: 8px;
+        font-size: 16px;
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+      }
+      .tutorial-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-top: 14px;
+        color: var(--primary-light);
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .tutorial-link:hover {
+        color: #fff;
+      }
+      .tutorial-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 24px;
+      }
+      .tutorial-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .tutorial-dot {
+        width: 24px;
+        height: 3px;
+        padding: 0;
+        border: 0;
+        background: var(--border);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .tutorial-dot.active {
+        width: 42px;
+        background: var(--primary-light);
+      }
+      .tutorial-arrows {
+        display: flex;
+        gap: 7px;
+      }
+      .tutorial-arrow {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .tutorial-arrow:hover {
+        color: #fff;
+        border-color: rgba(85, 180, 255, 0.35);
+        background: rgba(51, 140, 204, 0.08);
+      }
+
+      /* ---------- CONTACT ---------- */
+      .contact {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+      }
+      .contact-box {
+        width: 100%;
+        padding: 75px 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+      .contact-box h2 {
+        max-width: 800px;
+        font-size: clamp(48px, 7vw, 82px);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+      }
+      .contact-box h2 em {
+        font-style: normal;
+        color: var(--primary-light);
+      }
+      .contact-description {
+        max-width: 600px;
+        margin-top: 25px;
+        color: var(--text-secondary);
+        font-size: 15px;
+      }
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 50px;
+      }
+      .contact-item {
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+      }
+      .contact-item span {
+        display: block;
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      .contact-item a,
+      .contact-item strong {
+        display: block;
+        margin-top: 7px;
+        color: var(--text-secondary);
+        font-size: 12px;
+      }
+      .contact-item a:hover {
+        color: var(--primary-light);
+      }
+
+      /* ---------- FOOTER ---------- */
+      footer {
+        padding: 30px 0;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-family: monospace;
+        font-size: 9px;
+      }
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      /* ---------- RESPONSIVE ---------- */
+      @media (max-width: 950px) {
+        .tutorial-card {
+          flex-basis: calc((100% - 18px) / 2);
+        }
+      }
+      @media (max-width: 850px) {
+        .hero-layout,
+        .teaching-layout {
+          grid-template-columns: 1fr;
+        }
+        .hero-profile {
+          max-width: 320px;
+        }
+        .skills {
+          grid-template-columns: 1fr;
+        }
+        .contact-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .experience-item {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .project {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .navigation {
+          display: none;
+        }
+        .menu {
+          display: block;
+        }
+        .navigation.mobile {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          top: 70px;
+          left: 20px;
+          right: 20px;
+          padding: 15px;
+          border: 1px solid var(--border);
+          background: rgba(13, 21, 32, 0.98);
+        }
+      }
+      @media (max-width: 600px) {
+        .tutorial-card {
+          flex-basis: 86%;
+        }
+        .tutorial-controls {
+          margin-top: 18px;
+        }
+      }
+      @media (max-width: 550px) {
+        .container {
+          width: calc(100% - 28px);
+        }
+        section {
+          padding: 80px 0;
+        }
+        .hero {
+          padding-top: 120px;
+        }
+        .hero h1 {
+          font-size: 50px;
+        }
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer {
+          flex-direction: column;
+          gap: 8px;
+          align-items: flex-start;
+        }
+        .hi {
+          font-size: 48 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-background"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header id="header">
+      <div class="container nav">
+        <a href="#hero" class="brand">
+          <span class="brand-mark">A/</span>
+          <div>
+            <span>Aya Abdelmoneim</span>
+            <div class="text-linear-gradient">Flutter Developer&nbsp;</div>
+          </div>
+        </a>
+        <nav class="navigation" id="navigation">
+          <a href="#hero">Home</a>
+          <a href="#skills">Skills</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#teaching">Teaching</a>
+          <a href="#tutorials">Tutorials</a>
+          <a href="#contact" class="nav-contact">Contact</a>
+        </nav>
+        <button class="menu" id="menu">☰</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- ===== HERO ===== -->
+      <section class="hero" id="hero">
+        <div class="container hero-layout">
+          <div class="reveal">
+            <div class="availability">
+              <span class="availability-dot"></span> Available for opportunities
+            </div>
+            <h2 class="hi">
+              👋 Hello, I'm
+              <span class="text-linear-gradient"
+                ><em>Aya Abdelmoneim&nbsp;</em></span
+              >
+            </h2>
+            <p class="hero-description">
+              A Flutter Developer and Mobile Application Specialist focused on
+              clean architecture, maintainable code, responsive interfaces, and
+              production-ready mobile applications.
+            </p>
+            <div class="hero-actions">
+              <a href="#contact" class="button button-primary"
+                >Get in touch →</a
+              >
+              <a href="#projects" class="button button-secondary"
+                >View projects</a
+              >
+              <a href="#experience" class="button button-secondary"
+                >Experience</a
+              >
+            </div>
+          </div>
+          <aside class="hero-profile reveal">
+            <div class="profile-frame">
+              <img
+                src="assets/Aya_Abdelmoneim_LinkedIn_Profile_Under_1MB-removebg-preview.png"
+                alt="Aya Abdelmoneim"
+              />
+            </div>
+            <div class="profile-info">
+              <strong>Aya Abdelmoneim</strong>
+              <span>Software Engineer · Mobile Application Specialist</span>
+              <div class="profile-line"></div>
+              <span>Banha / Cairo · Egypt</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ===== SKILLS ===== -->
+      <section id="skills">
+        <div class="container">
+          <div class="section-heading reveal">
+            <h2>
+              <em class="section-index-big">01</em> Skills
+              <span class="text-linear-gradient"><em>Modules&nbsp;</em></span>
+            </h2>
+            <p>
+              My technical expertise is organized around the architecture,
+              development, integration, performance, and delivery of modern
+              Flutter applications.
+            </p>
+          </div>
+          <div class="skills">
+            <article class="skill reveal">
+              <span class="section-index">01</span>
+              <h3>Flutter & scalable architecture</h3>
+              <p>
+                Building maintainable cross-platform applications using
+                structured architecture, reusable components, and clean
+                development principles.
+              </p>
+              <div class="skill-tags">
+                <span class="skill-tag">Flutter</span
+                ><span class="skill-tag">Dart</span>
+                <span class="skill-tag">Clean Architecture</span
+                ><span class="skill-tag">MVVM</span>
+                <span class="skill-tag">MVI</span
+                ><span class="skill-tag">Feature First</span>
+                <span class="skill-tag">SOLID</span>
+              </div>
+            </article>
+            <article class="skill reveal">
+              <span class="section-index">02</span>
+              <h3>State & presentation</h3>
+              <p>
+                Designing predictable application state and responsive user
+                interfaces for complex mobile flows.
+              </p>
+              <div class="skill-tags">
+                <span class="skill-tag">BLoC</span
+                ><span class="skill-tag">Cubit</span>
+                <span class="skill-tag">Riverpod</span
+                ><span class="skill-tag">Provider</span>
+                <span class="skill-tag">GetX</span
+                ><span class="skill-tag">Responsive UI</span>
+                <span class="skill-tag">Animations</span>
+              </div>
+            </article>
+            <article class="skill reveal">
+              <span class="section-index">03</span>
+              <h3>APIs & integrations</h3>
+              <p>
+                Connecting applications with modern backend services, real-time
+                systems, authentication, and payment platforms.
+              </p>
+              <div class="skill-tags">
+                <span class="skill-tag">REST APIs</span
+                ><span class="skill-tag">GraphQL</span>
+                <span class="skill-tag">Firebase</span
+                ><span class="skill-tag">WebSockets</span>
+                <span class="skill-tag">Stripe</span
+                ><span class="skill-tag">Paymob</span>
+                <span class="skill-tag">Deep Linking</span>
+              </div>
+            </article>
+            <article class="skill reveal">
+              <span class="section-index">04</span>
+              <h3>Data & offline-first</h3>
+              <p>
+                Designing local persistence and offline-capable experiences for
+                reliable mobile applications.
+              </p>
+              <div class="skill-tags">
+                <span class="skill-tag">SQLite</span
+                ><span class="skill-tag">Hive</span>
+                <span class="skill-tag">Local Storage</span
+                ><span class="skill-tag">Offline First</span>
+              </div>
+            </article>
+            <article class="skill reveal">
+              <span class="section-index">05</span>
+              <h3>Performance & testing</h3>
+              <p>
+                Improving stability, debugging production issues, profiling
+                applications, and validating application behavior.
+              </p>
+              <div class="skill-tags">
+                <span class="skill-tag">DevTools</span
+                ><span class="skill-tag">Isolates</span>
+                <span class="skill-tag">Unit Testing</span
+                ><span class="skill-tag">Widget Testing</span>
+                <span class="skill-tag">Integration Testing</span
+                ><span class="skill-tag">BLoC Testing</span>
+              </div>
+            </article>
+            <article class="skill reveal">
+              <span class="section-index">06</span>
+              <h3>Delivery & mobile DevOps</h3>
+              <p>
+                Working with modern version control, release workflows,
+                distribution, monitoring, and CI/CD practices.
+              </p>
+              <div class="skill-tags">
+                <span class="skill-tag">Git</span
+                ><span class="skill-tag">GitHub</span>
+                <span class="skill-tag">GitHub Actions</span
+                ><span class="skill-tag">Fastlane</span>
+                <span class="skill-tag">Firebase Distribution</span
+                ><span class="skill-tag">Crashlytics</span>
+                <span class="skill-tag">Flavors</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== EXPERIENCE ===== -->
+      <section id="experience">
+        <div class="container">
+          <div class="section-heading reveal">
+            <h2>
+              <em class="section-index-big">02</em> Experience
+              <span class="text-linear-gradient"><em>Timeline&nbsp;</em></span>
+            </h2>
+            <p>
+              Professional experience across mobile development, education,
+              healthcare, e-commerce, and technical mentoring.
+            </p>
+          </div>
+          <div class="experience">
+            <article class="experience-item reveal">
+              <div class="experience-date">Apr 2026 — Present</div>
+              <div class="experience-main">
+                <h3>Freelance</h3>
+                <div class="experience-role">Flutter Developer · Remote</div>
+                <p class="experience-description">
+                  Architecting and developing modern mobile application
+                  interfaces from scratch with a focus on scalability,
+                  responsiveness, consistent design systems, and maintainable
+                  architecture.
+                </p>
+                <div class="experience-tags">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">Cubit</span>
+                  <span class="skill-tag">MVVM</span
+                  ><span class="skill-tag">Responsive UI</span>
+                </div>
+              </div>
+            </article>
+            <article class="experience-item reveal">
+              <div class="experience-date">Jul 2025 — Present</div>
+              <div class="experience-main">
+                <h3>CS Academy</h3>
+                <div class="experience-role">Flutter Instructor · Remote</div>
+                <p class="experience-description">
+                  Delivering intensive Flutter training covering advanced
+                  Flutter concepts, REST APIs, Git/GitHub workflows, local
+                  caching, payment gateways, architecture, and technical
+                  interview preparation.
+                </p>
+                <div class="experience-tags">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">REST APIs</span>
+                  <span class="skill-tag">GitHub</span
+                  ><span class="skill-tag">Code Review</span>
+                  <span class="skill-tag">Mentoring</span>
+                </div>
+              </div>
+            </article>
+            <article class="experience-item reveal">
+              <div class="experience-date">Dec 2025 — Jul 2026</div>
+              <div class="experience-main">
+                <h3>GDG Damanhour</h3>
+                <div class="experience-role">Flutter Instructor · Remote</div>
+                <p class="experience-description">
+                  Co-delivered Dart programming fundamentals and Flutter
+                  development concepts, including state management, REST
+                  integration, offline storage, Firebase, and end-to-end mobile
+                  development workflows.
+                </p>
+                <div class="experience-tags">
+                  <span class="skill-tag">Dart</span
+                  ><span class="skill-tag">Flutter</span>
+                  <span class="skill-tag">Firebase</span
+                  ><span class="skill-tag">REST</span>
+                </div>
+              </div>
+            </article>
+            <article class="experience-item reveal">
+              <div class="experience-date">Jan 2025 — May 2025</div>
+              <div class="experience-main">
+                <h3>E-Connect Africa</h3>
+                <div class="experience-role">Flutter Developer · Banha</div>
+                <p class="experience-description">
+                  Developed scalable cross-platform features and architected
+                  authentication, onboarding, admission, inquiry, tour booking,
+                  and role selection flows for education and healthcare
+                  applications. Contributed to a 25% reduction in QA-reported
+                  bugs.
+                </p>
+                <div class="experience-tags">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">Clean Architecture</span>
+                  <span class="skill-tag">Healthcare</span
+                  ><span class="skill-tag">Education</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROJECTS ===== -->
+      <section id="projects">
+        <div class="container">
+          <div class="section-heading reveal">
+            <h2>
+              <em class="section-index-big">02</em> Project
+              <span class="text-linear-gradient"><em>Archive&nbsp;</em></span>
+            </h2>
+            <p>
+              Selected mobile applications and technical projects across
+              healthcare, education, e-commerce, ordering, and personal
+              products.
+            </p>
+          </div>
+          <div class="projects">
+            <article class="project reveal">
+              <div>
+                <span class="project-index">01</span>
+                <div class="project-type">Education</div>
+              </div>
+              <div class="project-main">
+                <h3>Mighty App</h3>
+                <p>
+                  Admission management platform with secure authentication, role
+                  selection, admission workflows, inquiry management, and tour
+                  booking.
+                </p>
+                <div class="project-tech">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">Clean Architecture</span>
+                  <span class="skill-tag">Authentication</span
+                  ><span class="skill-tag">REST APIs</span>
+                </div>
+              </div>
+            </article>
+            <article class="project reveal">
+              <div>
+                <span class="project-index">02</span>
+                <div class="project-type">Healthcare</div>
+              </div>
+              <div class="project-main">
+                <h3>ElBalto</h3>
+                <p>
+                  Healthcare and telemedicine application. Improved stability,
+                  resolved QA issues, and implemented the onboarding experience
+                  across key user flows.
+                </p>
+                <div class="project-tech">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">Healthcare</span>
+                  <span class="skill-tag">API Integration</span
+                  ><span class="skill-tag">UI/UX</span>
+                  <a class="skill-tag" href="https://play.google.com/store/apps/details?id=com.elbalto" target="_blank" rel="noopener">
+                  🚀 Google play
+                  </a>
+                </div>
+              </div>
+            </article>
+            <article class="project reveal">
+              <div>
+                <span class="project-index">03</span>
+                <div class="project-type">Healthcare</div>
+              </div>
+              <div class="project-main">
+                <h3>Care Connect SS</h3>
+                <p>
+                  Healthcare application where I worked on onboarding, UI/UX
+                  improvements, API debugging, and production issue resolution.
+                </p>
+                <div class="project-tech">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">Firebase</span>
+                  <span class="skill-tag">REST APIs</span
+                  ><span class="skill-tag">Debugging</span>
+                   <a class="skill-tag" href="https://play.google.com/store/apps/details?id=com.econnect.caress&hl=en" target="_blank" rel="noopener">
+                   🚀 Google play
+                  </a>
+                </div>
+              </div>
+            </article>
+            <article class="project reveal">
+              <div>
+                <span class="project-index">04</span>
+                <div class="project-type">Ordering + Analytics</div>
+              </div>
+              <div class="project-main">
+                <h3>Carwan Dough</h3>
+                <p>
+                  Pastry ordering platform with offline cart persistence and
+                  real-time order tracking, together with an analytics dashboard
+                  for sales and delivery performance.
+                </p>
+                <div class="project-tech">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">Offline Storage</span>
+                  <span class="skill-tag">Firebase Analytics</span
+                  ><span class="skill-tag">Real-time Tracking</span>
+                   <a class="skill-tag" href="https://www.behance.net/gallery/210072113/Carwan-dough-Visual-Identity-for-donuts-cloud-kitchen" target="_blank" rel="noopener">
+                    Behance
+                  </a>
+                </div>
+              </div>
+            </article>
+            <article class="project reveal">
+              <div>
+                <span class="project-index">05</span>
+                <div class="project-type">UI / Architecture</div>
+              </div>
+              <div class="project-main">
+                <h3>Lupus</h3>
+                <p>
+                  Designed the mobile UI from scratch and implemented the
+                  application using Cubit and MVVM for a scalable architecture.
+                </p>
+                <div class="project-tech">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">Cubit</span>
+                  <span class="skill-tag">MVVM</span
+                  ><span class="skill-tag">UI Design</span>
+                   <a class="skill-tag" href="https://www.behance.net/gallery/246513833/Lupus-Tracker-App-Medical-UIUX-Case-Study" target="_blank" rel="noopener">
+                    Behance
+                  </a>
+                </div>
+              </div>
+            </article>
+            <article class="project reveal">
+              <div>
+                <span class="project-index">06</span>
+                <div class="project-type">Personal · Published</div>
+              </div>
+              <div class="project-main">
+                <h3>Quran Reading App</h3>
+                <p>
+                  Offline-first Quran application with SQLite-backed Tafsir,
+                  advanced search, bookmarking, and a complete Google Play
+                  release lifecycle.
+                </p>
+                <div class="project-tech">
+                  <span class="skill-tag">Flutter</span
+                  ><span class="skill-tag">SQLite</span>
+                  <span class="skill-tag">Offline First</span
+                  ><span class="skill-tag">Search</span>
+                   <a class="skill-tag" href="https://play.google.com/store/apps/details?id=at.ayhb756.quranapp" target="_blank" rel="noopener">
+                   🚀 Google play
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TEACHING ===== -->
+      <section id="teaching">
+        <div class="container">
+          <div class="section-heading reveal">
+            <h2>
+              <em class="section-index-big">04</em> Teaching &
+              <span class="text-linear-gradient"><em>Community&nbsp;</em></span>
+            </h2>
+            <p>
+              Beyond building applications, I enjoy helping developers
+              understand Flutter, architecture, and professional development
+              workflows.
+            </p>
+          </div>
+          <div class="teaching-layout">
+            <div class="teaching-highlight reveal">
+              <div class="teaching-number">50+</div>
+              <h3>Developers mentored</h3>
+              <p>
+                Through Flutter training, practical labs, code reviews,
+                architecture guidance, and technical interview preparation.
+              </p>
+            </div>
+            <div class="teaching-list">
+              <article class="teaching-item reveal">
+                <span class="section-index">01</span>
+                <div>
+                  <h3>CS Academy</h3>
+                  <p>
+                    Intensive Flutter training covering REST APIs, Git/GitHub,
+                    local caching, payment gateways, architecture, and
+                    real-world projects.
+                  </p>
+                </div>
+              </article>
+              <article class="teaching-item reveal">
+                <span class="section-index">02</span>
+                <div>
+                  <h3>GDG Damanhour</h3>
+                  <p>
+                    Dart and Flutter sessions covering programming fundamentals,
+                    widgets, state management, Firebase, REST APIs, and offline
+                    storage.
+                  </p>
+                </div>
+              </article>
+              <article class="teaching-item reveal">
+                <span class="section-index">03</span>
+                <div>
+                  <h3>Practical Mentoring</h3>
+                  <p>
+                    Code reviews, Clean Code, SOLID, architecture patterns,
+                    portfolio guidance, and interview preparation.
+                  </p>
+                </div>
+              </article>
+              <article class="teaching-item reveal">
+                <span class="section-index">04</span>
+                <div>
+                  <h3>Technical Content</h3>
+                  <p>
+                    Sharing Flutter development concepts, implementation
+                    techniques, and practical learning resources.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TUTORIALS ===== -->
+      <section id="tutorials" class="tutorials">
+        <div class="container">
+          <div class="section-heading reveal">
+            <h2>
+              <em class="section-index-big">05</em> Tutorial
+              <span class="text-linear-gradient"
+                ><em>Broadcasts&nbsp;</em></span
+              >
+            </h2>
+            <p>
+              Practical Flutter tutorials covering integrations, Firebase, maps,
+              payments, debugging, and real-world mobile development.
+            </p>
+          </div>
+          <div class="tutorial-slider reveal">
+            <div class="tutorial-track" id="tutorialTrack">
+              <article class="tutorial-card">
+                <div class="tutorial-thumb">
+                  <img
+                    src="assets/Flutter API - GDG damanhour.avif"
+                    alt="Flutter API GDG"
+                  />
+                </div>
+                <div class="tutorial-content">
+                  <span class="tutorial-number">01 / YOUTUBE</span>
+                  <h3>Flutter API - GDG damanhour</h3>
+                  <a
+                    class="tutorial-link"
+                    href="https://www.youtube.com/watch?v=0sASGW1HPCg"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    ▶ Watch on YouTube
+                  </a>
+                </div>
+              </article>
+              <article class="tutorial-card">
+                <div class="tutorial-thumb">
+                  <img src="assets/Null Safety.jpg" alt="Null Safety" />
+                </div>
+                <div class="tutorial-content">
+                  <span class="tutorial-number">02 / YOUTUBE</span>
+                  <h3>Null Safety in Dart</h3>
+                  <a
+                    class="tutorial-link"
+                    href="https://www.youtube.com/watch?v=67QZzDrj8uk"
+                    target="_blank"
+                    rel="noopener"
+                    >▶ Watch on YouTube</a
+                  >
+                </div>
+              </article>
+              <article class="tutorial-card">
+                <div class="tutorial-thumb">
+                  <img
+                    src="assets/OOP Explained with Cookies 🍪.jpg"
+                    alt="OOP Cookies"
+                  />
+                </div>
+                <div class="tutorial-content">
+                  <span class="tutorial-number">03 / YOUTUBE</span>
+                  <h3>OOP Explained with Cookies 🍪</h3>
+                  <a
+                    class="tutorial-link"
+                    href="https://www.youtube.com/results?search_query=Flutter+Maps+Full+Tutorial"
+                    target="_blank"
+                    rel="noopener"
+                    >▶ Watch on YouTube</a
+                  >
+                </div>
+              </article>
+            </div>
+            <div class="tutorial-controls">
+              <div class="tutorial-dots" id="tutorialDots">
+                <button
+                  class="tutorial-dot active"
+                  aria-label="Show tutorial 1"
+                ></button>
+                <button
+                  class="tutorial-dot"
+                  aria-label="Show tutorial 2"
+                ></button>
+                <button
+                  class="tutorial-dot"
+                  aria-label="Show tutorial 3"
+                ></button>
+                <button
+                  class="tutorial-dot"
+                  aria-label="Show tutorial 4"
+                ></button>
+              </div>
+              <div class="tutorial-arrows">
+                <button
+                  class="tutorial-arrow"
+                  id="tutorialPrev"
+                  aria-label="Previous tutorials"
+                >
+                  ←
+                </button>
+                <button
+                  class="tutorial-arrow"
+                  id="tutorialNext"
+                  aria-label="Next tutorials"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CONTACT ===== -->
+      <section class="contact" id="contact">
+        <div class="container">
+          <div class="contact-box reveal">
+            <span class="section-index">06 / OPEN CHANNEL</span>
+            <h2>Let's build something <em>great.</em></h2>
+            <p class="contact-description">
+              Open to Flutter development opportunities, freelance projects,
+              remote collaboration, and technical communities.
+            </p>
+            <div class="contact-grid">
+              <div class="contact-item">
+                <span>Email</span
+                ><a href="mailto:ayaabdelmoneim@gmail.com"
+                  >ayaabdelmoneim@gmail.com</a
+                >
+              </div>
+              <!-- <div class="contact-item"><span>Phone</span><a href="tel:+201276931844">+20 127 693 1844</a></div> -->
+              <div class="contact-item">
+                <span>Location</span><strong>Banha / Cairo, Egypt</strong>
+              </div>
+              <div class="contact-item">
+                <span>Status</span><strong>● Open to opportunities</strong>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a
+                href="mailto:ayaabdelmoneim@gmail.com"
+                class="button button-primary"
+                >Start a conversation →</a
+              >
+              <a
+                href="https://flowcv.com/resume/s8a1k5pal1"
+                class="button button-secondary"
+                >Download CV</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      <div class="container footer">
+        <span>© 2026 Aya Abdelmoneim. All rights reserved.</span>
+        <span>Flutter Developer · Mobile Application Specialist</span>
+      </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+      (function () {
+        // ---- NAVBAR SCROLL ----
+        const header = document.getElementById("header");
+        window.addEventListener("scroll", () => {
+          header.classList.toggle("scrolled", window.scrollY > 30);
+        });
+
+        // ---- MOBILE MENU ----
+        const menu = document.getElementById("menu");
+        const navigation = document.getElementById("navigation");
+        menu.addEventListener("click", () =>
+          navigation.classList.toggle("mobile"),
+        );
+        navigation.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () =>
+            navigation.classList.remove("mobile"),
+          );
+        });
+
+        // ---- SCROLL REVEAL ----
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+        document
+          .querySelectorAll(".reveal")
+          .forEach((el) => observer.observe(el));
+
+        // ---- TUTORIAL SLIDER ----
+        const track = document.getElementById("tutorialTrack");
+        const prevBtn = document.getElementById("tutorialPrev");
+        const nextBtn = document.getElementById("tutorialNext");
+        const dots = document.querySelectorAll(".tutorial-dot");
+
+        if (track) {
+          const getStep = () => {
+            const cards = track.querySelectorAll(".tutorial-card");
+            if (!cards.length) return 0;
+            const gap = parseFloat(getComputedStyle(track).gap) || 0;
+            return cards[0].getBoundingClientRect().width + gap;
+          };
+
+          const updateDots = () => {
+            const step = getStep();
+            if (!step) return;
+            const idx = Math.round(track.scrollLeft / step);
+            dots.forEach((dot, i) => {
+              dot.classList.toggle(
+                "active",
+                i === Math.min(idx, dots.length - 1),
+              );
+            });
+          };
+
+          nextBtn?.addEventListener("click", () =>
+            track.scrollBy({ left: getStep(), behavior: "smooth" }),
+          );
+          prevBtn?.addEventListener("click", () =>
+            track.scrollBy({ left: -getStep(), behavior: "smooth" }),
+          );
+          dots.forEach((dot, i) => {
+            dot.addEventListener("click", () => {
+              track.scrollTo({ left: getStep() * i, behavior: "smooth" });
+            });
+          });
+          track.addEventListener("scroll", updateDots, { passive: true });
+
+          // Drag support
+          let isDragging = false,
+            startX = 0,
+            startScrollLeft = 0;
+          track.addEventListener("pointerdown", (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startScrollLeft = track.scrollLeft;
+            track.classList.add("dragging");
+            track.setPointerCapture(e.pointerId);
+          });
+          track.addEventListener("pointermove", (e) => {
+            if (!isDragging) return;
+            track.scrollLeft = startScrollLeft - (e.clientX - startX);
+          });
+          const stopDrag = () => {
+            isDragging = false;
+            track.classList.remove("dragging");
+          };
+          track.addEventListener("pointerup", stopDrag);
+          track.addEventListener("pointercancel", stopDrag);
+          track.addEventListener("pointerleave", stopDrag);
+          window.addEventListener("resize", updateDots);
+        }
+
+        // ---- ACTIVE NAV ----
+        const sections = document.querySelectorAll("section[id]");
+        const navItems = document.querySelectorAll(".navigation a");
+        window.addEventListener("scroll", () => {
+          let current = "";
+          sections.forEach((section) => {
+            if (window.scrollY >= section.offsetTop - 150) {
+              current = section.getAttribute("id");
+            }
+          });
+          navItems.forEach((item) => {
+            item.style.color = "";
+            if (item.getAttribute("href") === `#${current}`) {
+              item.style.color = "var(--primary-light)";
+            }
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
